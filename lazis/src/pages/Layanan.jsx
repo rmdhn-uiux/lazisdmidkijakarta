@@ -1,132 +1,176 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Layanan = ({ subPage }) => {
-  const [activeTab, setActiveTab] = useState(subPage || 'kantor');
-
-  // Map subPage prop to state if it changes
-  if (subPage && subPage !== activeTab) {
-      setActiveTab(subPage);
-  }
+  const activeTab = subPage || 'kantor';
 
   const renderContent = () => {
     switch (activeTab) {
       case 'kantor':
         return (
-          <div className="animate-fade-in">
-             <div className="d-flex align-items-center gap-3 mb-4">
-                <div className="bg-success bg-opacity-10 p-3 rounded-circle text-success">
-                   <i className="bi bi-building fs-3"></i>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="space-y-6"
+          >
+             <div className="flex items-center gap-4 mb-8">
+                <div className="bg-primary/10 p-4 rounded-2xl text-primary">
+                   <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                   </svg>
                 </div>
                 <div>
-                   <h2 className="fw-bold mb-0">Kantor Layanan</h2>
-                   <p className="text-muted mb-0">Kunjungi kantor kami untuk layanan langsung</p>
+                   <h2 className="text-2xl font-bold text-gray-900">Kantor Layanan</h2>
+                   <p className="text-text-muted">Kunjungi kantor kami untuk layanan langsung</p>
                 </div>
              </div>
              
-             <div className="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
-                <div className="row g-0">
-                   <div className="col-md-6">
+             <div className="bg-white border border-gray-100 shadow-sm rounded-3xl overflow-hidden">
+                <div className="flex flex-col md:flex-row">
+                   <div className="md:w-1/2 min-h-[300px]">
                       <iframe 
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.338872656363!2d106.845599314769!3d-6.219036995498068!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f46408287e07%3A0x68551918451846b0!2sMasjid%20Raya%20DMI%20Provinsi%20DKI%20Jakarta!5e0!3m2!1sid!2sid!4v1679000000000!5m2!1sid!2sid" 
-                        width="100%" 
-                        height="100%" 
-                        style={{border:0, minHeight: '300px'}} 
+                        className="w-full h-full border-0"
                         allowFullScreen="" 
                         loading="lazy"
                         title="Lokasi Kantor"
                       ></iframe>
                    </div>
-                   <div className="col-md-6 p-4 d-flex flex-column justify-content-center">
-                      <h5 className="fw-bold mb-3">Kantor Pusat</h5>
-                      <p className="text-secondary mb-4">
-                         Jl. Masjid Raya No. 1, RT.01/RW.01, Jati Pulo, Kec. Palmerah, Kota Jakarta Barat, Daerah Khusus Ibukota Jakarta 11430
-                      </p>
+                   <div className="md:w-1/2 p-8 flex flex-column justify-center">
+                      <div className="mb-6">
+                        <h5 className="font-bold text-lg mb-3 text-gray-900">Kantor Pusat</h5>
+                        <p className="text-text-muted leading-relaxed">
+                          Jl. Masjid Raya No. 1, RT.01/RW.01, Jati Pulo, Kec. Palmerah, Kota Jakarta Barat, Daerah Khusus Ibukota Jakarta 11430
+                        </p>
+                      </div>
                       
-                      <h6 className="fw-bold mb-2">Jam Operasional</h6>
-                      <ul className="list-unstyled text-secondary small mb-0">
-                         <li className="mb-1 d-flex justify-content-between"><span>Senin - Jumat:</span> <span>08.00 - 16.00 WIB</span></li>
-                         <li className="d-flex justify-content-between"><span>Sabtu - Minggu:</span> <span>Tutup</span></li>
-                      </ul>
+                      <div className="pt-6 border-t border-gray-100">
+                        <h6 className="font-bold mb-4 text-gray-900">Jam Operasional</h6>
+                        <div className="space-y-2 text-sm">
+                          <div className="flex justify-between items-center p-2 rounded-lg bg-gray-50">
+                            <span className="text-text-muted">Senin - Jumat:</span>
+                            <span className="font-semibold text-primary">08.00 - 16.00 WIB</span>
+                          </div>
+                          <div className="flex justify-between items-center p-2 rounded-lg">
+                            <span className="text-text-muted">Sabtu - Minggu:</span>
+                            <span className="font-semibold text-red-500">Tutup</span>
+                          </div>
+                        </div>
+                      </div>
                    </div>
                 </div>
              </div>
-          </div>
+          </motion.div>
         );
       case 'konsultasi':
         return (
-          <div className="animate-fade-in text-center py-4">
-             <div className="bg-success bg-opacity-10 p-4 rounded-circle text-success d-inline-block mb-4">
-                 <span style={{ fontSize: '3rem' }}>💬</span>
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="text-center py-12 px-6"
+          >
+             <div className="bg-primary/10 p-8 rounded-full text-primary inline-flex mb-8">
+                 <span className="text-5xl">💬</span>
              </div>
-             <h2 className="fw-bold mb-3">Konsultasi ZISWAF</h2>
-             <p className="text-secondary mb-4 mw-600 mx-auto">
+             <h2 className="text-3xl font-bold mb-4 text-gray-900">Konsultasi ZISWAF</h2>
+             <p className="text-text-muted mb-10 max-w-xl mx-auto text-lg">
                 Bingung menghitung zakat? Ingin berkonsultasi seputar hukum waris atau wakaf? 
                 Tim asatidz kami siap membantu Anda.
              </p>
-             <a href="https://wa.me/6282117460200" target="_blank" rel="noreferrer" className="btn btn-success btn-lg rounded-pill px-5 shadow-lg">
+             <a 
+               href="https://wa.me/6282117460200" 
+               target="_blank" 
+               rel="noreferrer" 
+               className="btn-primary rounded-full px-10 py-4 text-lg shadow-xl hover:scale-105 active:scale-95"
+             >
                 Chat via WhatsApp
              </a>
-          </div>
+          </motion.div>
         );
       case 'rekening':
         return (
-          <div className="animate-fade-in">
-             <div className="text-center mb-5">
-                <h2 className="fw-bold">Rekening Donasi</h2>
-                <p className="text-secondary">Salurkan donasi terbaik Anda melalui rekening resmi kami</p>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+          >
+             <div className="text-center mb-12">
+                <h2 className="text-3xl font-bold text-gray-900 mb-4">Rekening Donasi</h2>
+                <p className="text-text-muted text-lg">Salurkan donasi terbaik Anda melalui rekening resmi kami</p>
              </div>
              
-             <div className="row g-4 justify-content-center">
+             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {[
-                   { bank: 'BSI', no: '700.1234.5678', name: 'Lazis DMI DKI Jakarta', color: '#00a39d' },
-                   { bank: 'Bank Mandiri', no: '123.00.0456789.0', name: 'Lazis DMI DKI Jakarta', color: '#003d79' },
-                   { bank: 'BCA', no: '001.234.5678', name: 'Lazis DMI DKI Jakarta', color: '#005ca9' }
+                   { bank: 'BSI', no: '700.1234.5678', name: 'Lazis DMI DKI Jakarta', color: 'text-[#00a39d]' },
+                   { bank: 'Bank Mandiri', no: '123.00.0456789.0', name: 'Lazis DMI DKI Jakarta', color: 'text-[#003d79]' },
+                   { bank: 'BCA', no: '001.234.5678', name: 'Lazis DMI DKI Jakarta', color: 'text-[#005ca9]' }
                 ].map((rek, i) => (
-                   <div key={i} className="col-md-6 col-lg-4">
-                      <div className="card h-100 border-0 shadow-sm rounded-4 p-4 text-center hover-lift">
-                         <h5 className="fw-bold mb-1" style={{ color: rek.color }}>{rek.bank}</h5>
-                         <div className="my-3 py-2 bg-light rounded-3">
-                            <h4 className="fw-bold mb-0 text-dark letter-spacing-1">{rek.no}</h4>
+                   <motion.div 
+                    key={i}
+                    whileHover={{ y: -5 }}
+                    className="bg-white border border-gray-100 shadow-sm rounded-3xl p-6 text-center group transition-all"
+                   >
+                         <h5 className={`font-bold text-xl mb-4 ${rek.color}`}>{rek.bank}</h5>
+                         <div className="my-6 py-4 bg-gray-50 rounded-2xl group-hover:bg-primary/5 transition-colors">
+                            <h4 className="text-xl font-bold text-gray-900 tracking-wider">{rek.no}</h4>
                          </div>
-                         <p className="small text-secondary mb-0">a.n {rek.name}</p>
+                         <p className="text-sm text-text-muted mb-6">a.n {rek.name}</p>
                          <button 
-                            className="btn btn-sm btn-outline-secondary mt-3 rounded-pill"
-                            onClick={() => navigator.clipboard.writeText(rek.no)}
+                            className="w-full py-2.5 rounded-xl border border-gray-200 text-gray-600 font-semibold hover:bg-gray-50 transition-colors flex items-center justify-center gap-2"
+                            onClick={() => {
+                              navigator.clipboard.writeText(rek.no);
+                              alert('Nomor rekening berhasil disalin!');
+                            }}
                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" /></svg>
                             Salin No. Rekening
                          </button>
-                      </div>
-                   </div>
+                   </motion.div>
                 ))}
              </div>
-          </div>
+          </motion.div>
         );
       case 'laporan':
         return (
-          <div className="animate-fade-in">
-             <div className="d-flex align-items-center justify-content-between mb-4">
-                <h2 className="fw-bold mb-0">Laporan Tahunan</h2>
-                <div className="dropdown">
-                   <button className="btn btn-outline-secondary dropdown-toggle rounded-pill" type="button" data-bs-toggle="dropdown">
-                      Tahun 2024
-                   </button>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+          >
+             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+                <h2 className="text-2xl font-bold text-gray-900">Laporan Tahunan</h2>
+                <div className="relative inline-block text-left">
+                   <select className="appearance-none bg-white border border-gray-200 rounded-full px-6 py-2.5 pr-10 font-semibold text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary/20">
+                      <option>Tahun 2024</option>
+                      <option>Tahun 2023</option>
+                      <option>Tahun 2022</option>
+                   </select>
+                   <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-700">
+                      <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                   </div>
                 </div>
              </div>
              
-             <div className="card border-0 shadow-sm rounded-4 p-5 text-center bg-light">
-                <div className="mb-3">
-                   <i className="bi bi-file-earmark-pdf fs-1 text-danger"></i>
+             <div className="bg-white border border-gray-100 shadow-sm rounded-3xl p-10 text-center relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-full -mr-10 -mt-10 group-hover:scale-110 transition-transform"></div>
+                
+                <div className="mb-6 relative z-10">
+                   <div className="w-20 h-20 bg-red-50 text-red-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                      <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
+                   </div>
                 </div>
-                <h4 className="fw-bold">Annual Report 2024</h4>
-                <p className="text-secondary">Laporan kinerja dan keuangan Lazis DMI DKI Jakarta Tahun 2024</p>
-                <div>
-                   <button className="btn btn-primary rounded-pill px-4">
-                      <i className="bi bi-download me-2"></i> Download PDF
+                <h4 className="text-xl font-bold text-gray-900 mb-2">Annual Report 2024</h4>
+                <p className="text-text-muted mb-8 max-w-md mx-auto">Laporan kinerja dan keuangan Lazis DMI DKI Jakarta Tahun 2024</p>
+                <div className="relative z-10">
+                   <button className="btn-primary rounded-full px-8 flex items-center gap-2 mx-auto">
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                      Download PDF
                    </button>
                 </div>
              </div>
-          </div>
+          </motion.div>
         );
       default:
         return null;
@@ -134,12 +178,12 @@ const Layanan = ({ subPage }) => {
   };
 
   return (
-    <section className="py-5 mt-5">
-      <div className="container py-4">
-        <div className="row">
-           <div className="col-lg-3 mb-4">
-              <div className="card border-0 shadow-sm rounded-4 overflow-hidden sticky-top" style={{ top: '100px' }}>
-                 <div className="list-group list-group-flush">
+    <section className="py-20 bg-bg">
+      <div className="container">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+           <div className="lg:col-span-1">
+              <div className="bg-white border border-gray-100 shadow-sm rounded-3xl overflow-hidden sticky top-28">
+                 <div className="flex flex-col">
                     {[
                        { id: 'kantor', label: 'Kantor Layanan', icon: '🏢' },
                        { id: 'konsultasi', label: 'Konsultasi', icon: '💬' },
@@ -149,18 +193,20 @@ const Layanan = ({ subPage }) => {
                        <Link 
                           key={item.id} 
                           to={`/${item.id === 'laporan' ? 'annual-report' : item.id === 'rekening' ? 'info-rekening' : item.id === 'kantor' ? 'kantor-layanan' : item.id}`}
-                          className={`list-group-item list-group-item-action p-3 d-flex align-items-center gap-3 ${activeTab === item.id ? 'bg-success text-white fw-bold' : 'text-secondary'}`}
-                          onClick={() => setActiveTab(item.id)}
+                          className={`flex items-center gap-3 p-4 border-l-4 transition-all ${activeTab === item.id ? 'bg-primary/5 border-primary text-primary font-bold' : 'border-transparent text-gray-500 hover:bg-gray-50'}`}
                        >
-                          <span>{item.icon}</span> {item.label}
+                          <span className="text-xl">{item.icon}</span> 
+                          <span className="text-sm uppercase tracking-wider">{item.label}</span>
                        </Link>
                     ))}
                  </div>
               </div>
            </div>
            
-           <div className="col-lg-9">
-              {renderContent()}
+           <div className="lg:col-span-3 min-h-[500px]">
+              <AnimatePresence mode="wait">
+                {renderContent()}
+              </AnimatePresence>
            </div>
         </div>
       </div>

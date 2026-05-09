@@ -1,34 +1,17 @@
-/**
- * InfaqShodaqoh.jsx
- * Halaman Infaq & Shodaqoh — terinspirasi nucare.id/infak
- * Pembayaran via QRIS / Transfer + Konfirmasi WhatsApp
- */
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { formatRp } from '../../utils/format';
 
-// Format Rupiah
-const formatRp = (n) =>
-    new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(n);
-
-// Pilihan nominal cepat
 const NOMINAL_CEPAT = [10000, 25000, 50000, 100000, 250000, 500000];
 
-// Kategori infaq
 const KATEGORI = [
-    { id: 'umum', icon: '🌿', label: 'Infaq Umum', desc: 'Disalurkan untuk program-program pemberdayaan umat sesuai kebutuhan terkini.' },
-    { id: 'pendidikan', icon: '📚', label: 'Infaq Pendidikan', desc: 'Mendukung beasiswa dan sarana pendidikan bagi anak-anak kurang mampu.' },
-    { id: 'kesehatan', icon: '🏥', label: 'Infaq Kesehatan', desc: 'Membantu biaya pengobatan dan pelayanan kesehatan warga yang membutuhkan.' },
-    { id: 'masjid', icon: '🕌', label: 'Infaq Pembangunan Masjid', desc: 'Mendukung pembangunan, renovasi, dan operasional masjid se-DKI Jakarta.' },
-    { id: 'kemanusiaan', icon: '🤲', label: 'Infaq Kemanusiaan', desc: 'Bantuan darurat untuk korban bencana alam dan situasi kemanusiaan mendesak.' },
-    { id: 'ekonomi', icon: '💼', label: 'Infaq Pemberdayaan Ekonomi', desc: 'Modal usaha dan pelatihan kewirausahaan untuk masyarakat prasejahtera.' },
+    { id: 'umum', icon: '🌿', label: 'Infaq Umum', desc: 'Program pemberdayaan umat sesuai kebutuhan terkini.' },
+    { id: 'pendidikan', icon: '📚', label: 'Infaq Pendidikan', desc: 'Mendukung beasiswa dan sarana pendidikan.' },
+    { id: 'kesehatan', icon: '🏥', label: 'Infaq Kesehatan', desc: 'Membantu biaya pengobatan warga dhuafa.' },
+    { id: 'masjid', icon: '🕌', label: 'Pembangunan Masjid', desc: 'Renovasi dan operasional masjid di Jakarta.' },
+    { id: 'kemanusiaan', icon: '🤲', label: 'Kemanusiaan', desc: 'Bantuan darurat untuk korban bencana.' },
+    { id: 'ekonomi', icon: '💼', label: 'Pemberdayaan Ekonomi', desc: 'Modal usaha untuk masyarakat prasejahtera.' },
 ];
-
-// Keutamaan infaq
-const KEUTAMAAN = [
-    { ayat: 'QS. Al-Baqarah: 261', teks: '"Perumpamaan orang-orang yang menginfakkan hartanya di jalan Allah seperti sebutir biji yang menumbuhkan tujuh tangkai; pada setiap tangkai ada seratus biji."' },
-    { ayat: 'QS. Al-Baqarah: 274', teks: '"Orang-orang yang menginfakkan hartanya di malam dan siang hari, baik secara tersembunyi maupun terang-terangan, mereka mendapat pahala di sisi Tuhan mereka."' },
-];
-
-import './InfaqShodaqoh.css';
 
 const InfaqShodaqoh = () => {
     const [kategori, setKategori] = useState('umum');
@@ -42,223 +25,162 @@ const InfaqShodaqoh = () => {
     const katObj = KATEGORI.find((k) => k.id === kategori);
 
     const handleLanjut = () => {
-        if (nominalNum < 1000) { alert('Nominal minimal Rp 1.000'); return; }
+        if (nominalNum < 1000) return alert(`Minimal ${formatRp(1000)}`);
         setShowPayment(true);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     const handleKonfirmasiWA = () => {
-        if (!namaDonatur.trim()) {
-            alert('Silakan masukkan nama Anda untuk konfirmasi.');
-            document.getElementById('is-nama')?.focus();
-            return;
-        }
-
+        if (!namaDonatur.trim()) return alert('Masukkan nama Anda.');
         const nomorWA = '6282117460200';
         const msg = encodeURIComponent(
-            `Assalamualaikum, saya ingin mengkonfirmasi pembayaran Infaq/Shodaqoh:\n\n` +
-            `Nama       : ${namaDonatur}\n` +
-            `Peruntukan : ${katObj?.label}\n` +
-            `Nominal    : ${formatRp(nominalNum)}\n` +
-            `Metode     : ${metode === 'qris' ? 'QRIS' : 'Transfer Bank'}\n` +
-            (doa ? `Doa/Pesan  : ${doa}\n` : '') +
-            `\nMohon konfirmasinya. Jazakumullahu khairan 🙏`
+            `Assalamualaikum, saya konfirmasi Infaq/Shodaqoh:\n` +
+            `Nama: ${namaDonatur}\nPeruntukan: ${katObj?.label}\nNominal: ${formatRp(nominalNum)}\nMetode: ${metode.toUpperCase()}`
         );
         window.open(`https://wa.me/${nomorWA}?text=${msg}`, '_blank');
     };
 
     return (
-        <div className="is-page">
-            {/* ── Hero ── */}
-            <div className="is-hero">
-                <span className="is-hero-badge">Infaq &amp; Shodaqoh</span>
-                <h1>Berbagi <span>Kebaikan</span><br />Bersama Lazis DMI DKI</h1>
-                <p className="is-hero-desc">
-                    Setiap rupiah yang Anda infaqkan akan disalurkan secara amanah untuk memberdayakan
-                    saudara-saudara kita yang membutuhkan di DKI Jakarta.
-                </p>
-            </div>
-
-            {/* ── Ayat Strip ── */}
-            <div className="is-ayat-strip">
-                <div className="is-ayat-inner">
-                    <p className="is-ayat-text">{KEUTAMAAN[0].teks}</p>
-                    <p className="is-ayat-ref">{KEUTAMAAN[0].ayat}</p>
+        <div className="bg-bg min-h-screen py-32">
+            <div className="container">
+                {/* Hero */}
+                <div className="text-center mb-16">
+                    <span className="bg-primary/10 text-primary px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest mb-4 inline-block">Infaq & Shodaqoh</span>
+                    <h1 className="text-4xl lg:text-5xl font-extrabold text-gray-900 mb-6">Berbagi Kebaikan</h1>
+                    <p className="text-text-muted max-w-2xl mx-auto leading-relaxed">Salurkan infaq terbaik Anda untuk memberdayakan umat dan meraih keberkahan harta.</p>
                 </div>
-            </div>
 
-            {/* ── Main ── */}
-            <div className="is-main">
-
-                {/* Kiri — Kategori & Nominal */}
-                <div>
-                    {/* Pilih Kategori */}
-                    <div style={{ background: '#fff', borderRadius: 18, padding: '1.8rem', boxShadow: '0 4px 20px rgba(0,0,0,.08)', marginBottom: '1.5rem' }}>
-                        <div className="is-section-title">🎯 Pilih Peruntukan Infaq</div>
-                        <div className="is-kat-grid">
-                            {KATEGORI.map((k) => (
-                                <div
-                                    key={k.id}
-                                    className={`is-kat-card${kategori === k.id ? ' active' : ''}`}
-                                    onClick={() => setKategori(k.id)}
-                                    role="button"
-                                    tabIndex={0}
-                                >
-                                    <div className="is-kat-icon">{k.icon}</div>
-                                    <div className="is-kat-label">{k.label}</div>
-                                    <p className="is-kat-desc">{k.desc}</p>
-                                    <span className="is-kat-badge">{kategori === k.id ? '✓ Dipilih' : 'Pilih'}</span>
-                                </div>
-                            ))}
-                        </div>
-
-                        {/* Nominal */}
-                        <div className="is-section-title" style={{ marginTop: '.5rem' }}>💵 Pilih Nominal Infaq</div>
-                        <div className="is-nominal-chips">
-                            {NOMINAL_CEPAT.map((n) => (
-                                <button
-                                    key={n}
-                                    className={`is-chip${nominalNum === n ? ' active' : ''}`}
-                                    onClick={() => setNominal(String(n))}
-                                >
-                                    {formatRp(n)}
-                                </button>
-                            ))}
-                        </div>
-                        <input
-                            id="is-nominal-input"
-                            type="number"
-                            className="is-input"
-                            placeholder="Atau masukkan nominal lain (Rp)"
-                            value={nominal}
-                            onChange={(e) => setNominal(e.target.value)}
-                        />
-                        <p className="is-input-hint">Minimal nominal infaq: Rp 1.000</p>
-                    </div>
-
-                    {/* Keutamaan Infaq */}
-                    <div style={{ background: 'linear-gradient(135deg, #004d40, #00695c)', borderRadius: 18, padding: '2rem', color: '#fff' }}>
-                        <div style={{ fontSize: '.75rem', fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase', color: '#a7ffeb', marginBottom: '.4rem' }}>Al-Quran</div>
-                        <h3 style={{ margin: '0 0 1.3rem', fontSize: '1.1rem', fontWeight: 800 }}>Keutamaan Berinfaq &amp; Bershodaqoh</h3>
-                        {KEUTAMAAN.map((a, i) => (
-                            <div key={i} style={{ background: 'rgba(255,255,255,.1)', borderRadius: 12, padding: '1rem 1.2rem', marginBottom: i < KEUTAMAAN.length - 1 ? '.8rem' : 0 }}>
-                                <p style={{ fontStyle: 'italic', fontSize: '.85rem', color: 'rgba(255,255,255,.9)', margin: '0 0 .4rem', lineHeight: 1.65 }}>{a.teks}</p>
-                                <span style={{ fontSize: '.73rem', fontWeight: 700, color: '#a7ffeb' }}>{a.ayat}</span>
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                    {/* Left: Selection */}
+                    <div className="lg:col-span-7 space-y-8">
+                        <div className="bg-white p-8 lg:p-10 rounded-[2.5rem] shadow-xl border border-gray-50">
+                            <h3 className="text-xl font-bold text-gray-900 mb-8 flex items-center gap-3">
+                                <span className="w-8 h-8 bg-primary/10 text-primary rounded-lg flex items-center justify-center text-sm">1</span>
+                                Pilih Peruntukan Infaq
+                            </h3>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                {KATEGORI.map((k) => (
+                                    <button
+                                        key={k.id}
+                                        onClick={() => setKategori(k.id)}
+                                        className={`text-left p-6 rounded-2xl border-2 transition-all ${kategori === k.id ? 'border-primary bg-primary/5 shadow-md scale-[1.02]' : 'border-gray-100 hover:border-primary/30'}`}
+                                    >
+                                        <div className="text-3xl mb-4">{k.icon}</div>
+                                        <div className="font-bold text-gray-900 mb-1">{k.label}</div>
+                                        <p className="text-xs text-gray-500 leading-relaxed">{k.desc}</p>
+                                    </button>
+                                ))}
                             </div>
-                        ))}
+
+                            <h3 className="text-xl font-bold text-gray-900 mt-12 mb-8 flex items-center gap-3">
+                                <span className="w-8 h-8 bg-primary/10 text-primary rounded-lg flex items-center justify-center text-sm">2</span>
+                                Masukkan Nominal
+                            </h3>
+                            <div className="grid grid-cols-3 gap-3 mb-6">
+                                {NOMINAL_CEPAT.map((n) => (
+                                    <button
+                                        key={n}
+                                        onClick={() => setNominal(String(n))}
+                                        className={`py-3 rounded-xl text-xs font-bold transition-all border ${nominalNum === n ? 'bg-primary text-white border-primary shadow-lg shadow-primary/20' : 'bg-white text-gray-600 border-gray-100 hover:border-primary/50'}`}
+                                    >
+                                        {formatRp(n)}
+                                    </button>
+                                ))}
+                            </div>
+                            <input
+                                type="number"
+                                className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4 focus:ring-2 focus:ring-primary/20 outline-none font-bold text-xl text-primary"
+                                placeholder="Nominal Lain (Rp)"
+                                value={nominal}
+                                onChange={(e) => setNominal(e.target.value)}
+                            />
+                        </div>
                     </div>
-                </div>
 
-                {/* Kanan — Form Donasi */}
-                <div className="is-form-panel">
-                    <div className="is-form-header">
-                        <h2>Form Donasi Infaq</h2>
-                        <p>Isi data diri &amp; pilih metode pembayaran</p>
-                    </div>
-                    <div className="is-form-body">
-
-                        {/* Preview nominal */}
-                        <div className="is-nominal-preview">
-                            <div className="is-nominal-preview-label">Peruntukan: {katObj?.label}</div>
-                            <div className="is-nominal-preview-val">{nominalNum > 0 ? formatRp(nominalNum) : 'Rp 0'}</div>
-                        </div>
-
-                        {/* Nama */}
-                        <div className="is-form-field">
-                            <label className="is-form-label" htmlFor="is-nama">Nama Donatur</label>
-                            <input id="is-nama" type="text" className="is-input" placeholder="Nama lengkap / hamba Allah"
-                                value={namaDonatur} onChange={(e) => setNamaDonatur(e.target.value)} />
-                        </div>
-
-                        {/* Doa / Pesan */}
-                        <div className="is-form-field">
-                            <label className="is-form-label" htmlFor="is-doa">Doa / Pesan (opsional)</label>
-                            <textarea id="is-doa" className="is-input" rows={2} placeholder="Contoh: untuk kesembuhan ibu saya..."
-                                value={doa} onChange={(e) => setDoa(e.target.value)} style={{ resize: 'none' }} />
-                        </div>
-
-                        <button className="is-btn-lanjut" disabled={nominalNum < 1000} onClick={handleLanjut}>
-                            {nominalNum < 1000 ? 'Masukkan nominal infaq' : `Lanjutkan Infaq ${formatRp(nominalNum)}`}
-                        </button>
-
-                        {/* ── Pembayaran ── */}
-                        {showPayment && (
-                            <div className="is-payment">
-                                <h3>Pilih Metode Pembayaran</h3>
-                                <div className="is-metode-tabs">
-                                    <button className={`is-tab${metode === 'qris' ? ' active' : ''}`} onClick={() => setMetode('qris')}>📱 QRIS</button>
-                                    <button className={`is-tab${metode === 'transfer' ? ' active' : ''}`} onClick={() => setMetode('transfer')}>🏦 Transfer</button>
+                    {/* Right: Form */}
+                    <div className="lg:col-span-5">
+                        <div className="bg-white p-8 lg:p-10 rounded-[2.5rem] shadow-xl border border-gray-50 sticky top-32">
+                            <h3 className="text-xl font-bold text-gray-900 mb-8 flex items-center gap-3">
+                                <span className="w-8 h-8 bg-primary/10 text-primary rounded-lg flex items-center justify-center text-sm">3</span>
+                                Data Donatur
+                            </h3>
+                            
+                            <div className="space-y-6">
+                                <div className="p-6 bg-primary/5 rounded-2xl border border-primary/10">
+                                    <div className="text-xs font-bold text-primary uppercase tracking-widest mb-1">Total Infaq</div>
+                                    <div className="text-3xl font-black text-primary">{formatRp(nominalNum)}</div>
+                                    <div className="text-[10px] text-gray-500 mt-1 uppercase font-bold">{katObj?.label}</div>
                                 </div>
 
-                                {/* QRIS */}
-                                {metode === 'qris' && (
-                                    <div className="is-qris-box">
-                                        <div className="is-qris-img">🟩</div>
-                                        {/* Ganti dengan: <img src="/qris-lazis-dmi.png" alt="QRIS" style={{width:'160px',borderRadius:12}} /> */}
-                                        <div className="is-qris-label">QRIS Lazis DMI DKI Jakarta</div>
-                                        <div className="is-qris-sub">Scan menggunakan m-banking atau e-wallet Anda</div>
-                                        <div style={{ marginTop: '.6rem', fontSize: '.82rem', background: '#e0f2f1', padding: '.4rem .8rem', borderRadius: 8, color: '#00695c', fontWeight: 600 }}>
-                                            Nominal: {formatRp(nominalNum)}
-                                        </div>
-                                    </div>
-                                )}
+                                <div className="space-y-2">
+                                    <label className="text-sm font-bold text-gray-700 ml-1">Nama Donatur</label>
+                                    <input 
+                                        type="text" 
+                                        className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4 focus:ring-2 focus:ring-primary/20 transition-all outline-none" 
+                                        placeholder="Nama / Hamba Allah"
+                                        value={namaDonatur} 
+                                        onChange={(e) => setNamaDonatur(e.target.value)} 
+                                    />
+                                </div>
 
-                                {/* Transfer */}
-                                {metode === 'transfer' && (
-                                    <div className="is-rek-list">
-                                        {[
-                                            { bank: 'BSI', no: '700.1234.5678', an: 'Lazis DMI DKI Jakarta' },
-                                            { bank: 'BCA', no: '123.456.7890', an: 'Lazis DMI DKI Jakarta' },
-                                            { bank: 'Mandiri', no: '1230.0012.3456', an: 'Lazis DMI DKI Jakarta' },
-                                        ].map((r, i) => (
-                                            <div key={i} className="is-rek-item">
-                                                <div className="is-rek-bank">{r.bank}</div>
-                                                <div>
-                                                    <div className="is-rek-no">{r.no}</div>
-                                                    <div className="is-rek-an">a.n {r.an}</div>
-                                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-sm font-bold text-gray-700 ml-1">Doa / Pesan (Opsional)</label>
+                                    <textarea 
+                                        className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4 focus:ring-2 focus:ring-primary/20 transition-all outline-none resize-none" 
+                                        rows={3}
+                                        placeholder="Tulis doa atau harapan Anda..."
+                                        value={doa} 
+                                        onChange={(e) => setDoa(e.target.value)} 
+                                    />
+                                </div>
+
+                                <button 
+                                    className="w-full bg-primary hover:bg-primary-hover text-white py-5 rounded-2xl font-bold text-lg shadow-lg shadow-primary/20 transition-all disabled:opacity-50 disabled:grayscale"
+                                    disabled={nominalNum < 1000}
+                                    onClick={handleLanjut}
+                                >
+                                    Lanjutkan Infaq
+                                </button>
+                            </div>
+
+                            <AnimatePresence>
+                                {showPayment && (
+                                    <motion.div 
+                                        initial={{ opacity: 0, height: 0 }}
+                                        animate={{ opacity: 1, height: 'auto' }}
+                                        className="mt-8 pt-8 border-t border-gray-100 space-y-6"
+                                    >
+                                        <div className="flex justify-center gap-2 p-1 bg-gray-50 rounded-full w-fit mx-auto">
+                                            <button className={`px-6 py-2 rounded-full text-xs font-bold transition-all ${metode === 'qris' ? 'bg-white text-primary shadow-sm' : 'text-gray-500'}`} onClick={() => setMetode('qris')}>📱 QRIS</button>
+                                            <button className={`px-6 py-2 rounded-full text-xs font-bold transition-all ${metode === 'transfer' ? 'bg-white text-primary shadow-sm' : 'text-gray-500'}`} onClick={() => setMetode('transfer')}>🏦 Transfer</button>
+                                        </div>
+
+                                        {metode === 'qris' ? (
+                                            <div className="flex flex-col items-center">
+                                                <div className="w-40 h-40 bg-gray-50 rounded-2xl border border-dashed border-gray-200 flex items-center justify-center font-black text-primary italic mb-4">QRIS</div>
+                                                <p className="text-[10px] text-gray-500 text-center">Scan melalui m-banking atau e-wallet</p>
                                             </div>
-                                        ))}
-                                        <div style={{ fontSize: '.8rem', background: '#e0f2f1', padding: '.5rem .9rem', borderRadius: 8, color: '#00695c', fontWeight: 600 }}>
-                                            Nominal Transfer: {formatRp(nominalNum)}
-                                        </div>
-                                    </div>
+                                        ) : (
+                                            <div className="space-y-3">
+                                                {['BSI', 'BCA'].map((b, i) => (
+                                                    <div key={i} className="flex justify-between items-center p-4 bg-gray-50 rounded-xl border border-gray-100">
+                                                        <span className="text-xs font-black text-primary">{b}</span>
+                                                        <span className="text-sm font-bold text-gray-900 tracking-wider">700.1234.5678</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+
+                                        <button 
+                                            onClick={handleKonfirmasiWA}
+                                            className="w-full bg-green-600 hover:bg-green-700 text-white py-4 rounded-2xl font-bold flex items-center justify-center gap-3 transition-all text-sm"
+                                        >
+                                            Konfirmasi via WhatsApp
+                                        </button>
+                                    </motion.div>
                                 )}
-
-                                <button className="is-btn-wa" onClick={handleKonfirmasiWA}>
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.673.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" /></svg>
-                                    Konfirmasi via WhatsApp
-                                </button>
-                            </div>
-                        )}
-                    </div>
-                </div>
-            </div>
-
-            {/* ── Info Tambahan ── */}
-            <div className="is-info-section">
-                <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-                    <div style={{ fontSize: '.75rem', fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase', color: '#00695c', marginBottom: '.3rem' }}>Panduan</div>
-                    <h2 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#1a2e2e', margin: 0 }}>Tentang Infaq &amp; Shodaqoh</h2>
-                </div>
-                <div className="is-info-grid">
-                    <div className="is-info-card">
-                        <div className="is-info-title">📖 Pengertian Infaq</div>
-                        <ul className="is-info-list">
-                            <li>Infaq adalah mengeluarkan sebagian harta untuk kepentingan yang diperintahkan Islam</li>
-                            <li>Berbeda dengan zakat, infaq tidak terikat nisab dan dapat ditunaikan kapan saja</li>
-                            <li>Infaq dapat ditujukan untuk keluarga, kerabat, orang lain, maupun lembaga sosial</li>
-                            <li>Hukum infaq bisa wajib (nafkah keluarga) maupun sunnah (program kebaikan)</li>
-                        </ul>
-                    </div>
-                    <div className="is-info-card">
-                        <div className="is-info-title">✨ Pengertian Shodaqoh</div>
-                        <ul className="is-info-list">
-                            <li>Shodaqoh bersifat lebih luas — mencakup segala bentuk kebaikan, termasuk senyum</li>
-                            <li>Shodaqoh jariyah memberikan pahala yang terus mengalir meski pemberi telah wafat</li>
-                            <li>Tidak terbatas pada harta; waktu, tenaga, dan ilmu juga termasuk shodaqoh</li>
-                            <li>Allah melipatgandakan pahala shodaqoh hingga 700 kali lipat (QS. Al-Baqarah: 261)</li>
-                        </ul>
+                            </AnimatePresence>
+                        </div>
                     </div>
                 </div>
             </div>

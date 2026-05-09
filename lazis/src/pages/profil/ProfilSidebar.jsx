@@ -9,25 +9,30 @@ const ProfilSidebar = () => {
     const { pathname } = useLocation();
 
     const links = [
-        { to: '/tentang-kami', label: 'Tentang Kami' },
-        { to: '/visi-misi', label: 'Visi & Misi' },
-        { to: '/susunan-pengurus', label: 'Susunan Pengurus' },
+        { to: '/tentang-kami', label: 'Tentang Kami', icon: '📖' },
+        { to: '/visi-misi', label: 'Visi & Misi', icon: '🌟' },
+        { to: '/susunan-pengurus', label: 'Susunan Pengurus', icon: '👥' },
     ];
 
     return (
-        <aside className="profil-sidebar">
-            <div className="sidebar-header">
-                <span className="sidebar-icon">🕌</span>
-                <span className="sidebar-title">Profil Lembaga</span>
+        <aside className="bg-white border border-gray-100 shadow-sm rounded-3xl overflow-hidden sticky top-28">
+            <div className="bg-gradient-to-br from-primary to-primary-hover p-6 text-white flex items-center gap-3">
+                <span className="text-xl">🕌</span>
+                <span className="font-bold tracking-wide">Profil Lembaga</span>
             </div>
-            <nav className="sidebar-nav">
+            <nav className="flex flex-col">
                 {links.map((l) => (
                     <Link
                         key={l.to}
                         to={l.to}
-                        className={`sidebar-link${pathname === l.to ? ' active' : ''}`}
+                        className={`flex items-center gap-3 p-4 border-l-4 transition-all ${
+                            pathname === l.to 
+                            ? 'bg-primary/5 border-primary text-primary font-bold' 
+                            : 'border-transparent text-gray-500 hover:bg-gray-50'
+                        }`}
                     >
-                        {l.label}
+                        <span className="text-xl">{l.icon}</span>
+                        <span className="text-sm uppercase tracking-wider">{l.label}</span>
                     </Link>
                 ))}
             </nav>
@@ -36,3 +41,4 @@ const ProfilSidebar = () => {
 };
 
 export default ProfilSidebar;
+

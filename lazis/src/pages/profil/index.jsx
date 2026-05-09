@@ -16,7 +16,7 @@ import ProfilSidebar from './ProfilSidebar';
 import TentangKami from './TentangKami';
 import VisiMisi from './VisiMisi';
 import SusunanPengurus from './SusunanPengurus';
-import './Profil.css';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Profil = ({ subPage }) => {
     // Pilih komponen halaman berdasarkan subPage prop
@@ -30,11 +30,30 @@ const Profil = ({ subPage }) => {
     };
 
     return (
-        <div className="profil-wrapper">
-            <ProfilSidebar />
-            {renderPage()}
+        <div className="bg-bg py-20 min-h-screen">
+            <div className="container">
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                    <div className="lg:col-span-1">
+                        <ProfilSidebar />
+                    </div>
+                    <div className="lg:col-span-3">
+                        <AnimatePresence mode="wait">
+                            <motion.div
+                                key={subPage}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -20 }}
+                                transition={{ duration: 0.3 }}
+                            >
+                                {renderPage()}
+                            </motion.div>
+                        </AnimatePresence>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };
 
 export default Profil;
+

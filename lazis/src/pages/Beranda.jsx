@@ -1,178 +1,213 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { formatRp } from '../utils/format';
 import ProgramCard from '../components/ProgramCard';
+import { motion } from 'framer-motion';
+import { getPrograms } from '../api';
 
 const Beranda = () => {
-  // Dummy data for Beranda
-  const featuredPrograms = [
-    { id: 1, title: "Beasiswa Dhuafa Berprestasi", cat: "pendidikan", target: 100000000, collected: 45000000 },
-    { id: 2, title: "Layanan Ambulans Gratis 24 Jam", cat: "kesehatan", target: 250000000, collected: 120000000 },
-    { id: 3, title: "Bantuan Modal Usaha Mikro", cat: "ekonomi", target: 50000000, collected: 15000000 },
-  ];
+  const [featuredPrograms, setFeaturedPrograms] = useState([]);
+
+  useEffect(() => {
+    const fetchPrograms = async () => {
+      try {
+        const response = await getPrograms();
+        setFeaturedPrograms(response.data.slice(0, 3));
+      } catch (error) {
+        console.error("Error fetching featured programs:", error);
+      }
+    };
+    fetchPrograms();
+  }, []);
 
   return (
-    <>
+    <div className="overflow-hidden">
       {/* Hero Section */}
-      <section className="hero-section d-flex align-items-center position-relative overflow-hidden" style={{ minHeight: '90vh', paddingTop: '80px' }}>
-        <div className="position-absolute top-0 start-0 w-100 h-100" style={{ 
-            background: 'radial-gradient(circle at 10% 20%, rgb(240, 253, 244) 0%, rgb(255, 255, 255) 90%)',
-            zIndex: -1 
-        }}></div>
+      <section className="relative min-h-[90vh] flex items-center pt-20 overflow-hidden bg-white">
+        {/* Background Gradient */}
+        <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_10%_20%,_var(--color-bg)_0%,_#ffffff_90%)]"></div>
         
-        {/* Decorative Shapes */}
-        <div className="position-absolute top-0 end-0 mt-5 me-n5 opacity-25 d-none d-lg-block">
-            <svg width="400" height="400" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                <path fill="#15803d" d="M44.7,-76.4C58.9,-69.2,71.8,-59.1,81.6,-46.6C91.4,-34.1,98.2,-19.2,95.8,-5.2C93.5,8.9,82,22.1,70.6,33.2C59.1,44.2,47.7,53.2,35.2,60.6C22.7,68.1,9.1,74,-3.8,80.6C-16.7,87.1,-28.9,94.4,-40.2,89.5C-51.5,84.7,-61.9,67.7,-69.9,50.7C-77.9,33.7,-83.5,16.8,-81.4,1.2C-79.3,-14.4,-69.5,-28.7,-58.5,-40.4C-47.5,-52.1,-35.3,-61.1,-22.3,-69.3C-9.3,-77.5,4.5,-84.9,17.8,-83.3C31.1,-81.7,43.9,-71.1,44.7,-76.4Z" transform="translate(100 100)" />
+        {/* Decorative SVG */}
+        <div className="absolute top-20 -right-20 opacity-10 hidden lg:block rotate-12">
+            <svg width="600" height="600" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <path fill="var(--color-primary)" d="M44.7,-76.4C58.9,-69.2,71.8,-59.1,81.6,-46.6C91.4,-34.1,98.2,-19.2,95.8,-5.2C93.5,8.9,82,22.1,70.6,33.2C59.1,44.2,47.7,53.2,35.2,60.6C22.7,68.1,9.1,74,-3.8,80.6C-16.7,87.1,-28.9,94.4,-40.2,89.5C-51.5,84.7,-61.9,67.7,-69.9,50.7C-77.9,33.7,-83.5,16.8,-81.4,1.2C-79.3,-14.4,-69.5,-28.7,-58.5,-40.4C-47.5,-52.1,-35.3,-61.1,-22.3,-69.3C-9.3,-77.5,4.5,-84.9,17.8,-83.3C31.1,-81.7,43.9,-71.1,44.7,-76.4Z" transform="translate(100 100)" />
             </svg>
         </div>
 
-        <div className="container position-relative z-1">
-          <div className="row align-items-center">
-            <div className="col-lg-6 mb-5 mb-lg-0">
-              <span className="badge bg-success bg-opacity-10 text-success mb-3 px-3 py-2 rounded-pill fw-bold">
+        <div className="container relative z-10">
+          <div className="flex flex-col lg:flex-row items-center gap-12">
+            <div className="lg:w-1/2">
+              <motion.span 
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-bold mb-6"
+              >
                 ✨ Lembaga Amil Zakat Terpercaya
-              </span>
-              <h1 className="display-4 fw-bold mb-4 text-dark lh-sm">
+              </motion.span>
+              <motion.h1 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                className="text-4xl lg:text-6xl font-extrabold text-gray-900 leading-[1.1] mb-6"
+              >
                 Menebar Kebaikan, <br />
-                <span className="text-success position-relative">
+                <span className="text-primary relative inline-block">
                    Memuliakan Umat
-                   <svg className="position-absolute bottom-0 start-0 w-100" height="10" viewBox="0 0 200 9" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ zIndex: -1, opacity: 0.3 }}>
-                    <path d="M2.00025 7.00005C29.6231 3.52295 106.333 -1.82137 198.001 3.50005" stroke="#15803d" strokeWidth="3" strokeLinecap="round"/>
+                   <svg className="absolute -bottom-2 left-0 w-full opacity-30" height="10" viewBox="0 0 200 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2.00025 7.00005C29.6231 3.52295 106.333 -1.82137 198.001 3.50005" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/>
                    </svg>
                 </span>
-              </h1>
-              <p className="lead text-secondary mb-5 pe-lg-5">
+              </motion.h1>
+              <motion.p 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="text-lg text-gray-600 mb-10 lg:pr-10 leading-relaxed"
+              >
                 Salurkan zakat, infaq, dan sedekah Anda melalui Lazis DMI DKI Jakarta. 
                 Kami memastikan amanah Anda sampai kepada yang berhak dengan profesional dan transparan.
-              </p>
-              <div className="d-flex flex-wrap gap-3">
-                <Link to="/zakat" className="btn btn-primary btn-lg px-4 py-3 rounded-pill shadow-lg hover-scale">
-                  <span>Bayar Zakat</span>
-                  <i className="bi bi-arrow-right"></i>
+              </motion.p>
+              
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="flex flex-wrap gap-4"
+              >
+                <Link to="/zakat" className="btn-primary rounded-full px-8 py-4 text-base shadow-xl hover:scale-105 active:scale-95">
+                  Bayar Zakat Sekarang
                 </Link>
-                <Link to="/program" className="btn btn-outline-success btn-lg px-4 py-3 rounded-pill">
+                <Link to="/program" className="btn-outline-success rounded-full px-8 py-4 text-base">
                   Lihat Program
                 </Link>
-              </div>
+              </motion.div>
               
-              <div className="d-flex gap-5 mt-5 pt-3 border-top border-secondary border-opacity-10">
+              <div className="grid grid-cols-3 gap-8 mt-12 pt-8 border-t border-gray-100">
                  <div>
-                    <h4 className="fw-bold text-dark mb-0">15rb+</h4>
-                    <p className="text-secondary small mb-0">Donatur Terdaftar</p>
+                    <h4 className="text-2xl font-bold text-gray-900 mb-1">15rb+</h4>
+                    <p className="text-gray-500 text-sm">Donatur</p>
                  </div>
                  <div>
-                    <h4 className="fw-bold text-dark mb-0">850+</h4>
-                    <p className="text-secondary small mb-0">Penerima Manfaat</p>
+                    <h4 className="text-2xl font-bold text-gray-900 mb-1">850+</h4>
+                    <p className="text-gray-500 text-sm">Penerima</p>
                  </div>
                  <div>
-                    <h4 className="fw-bold text-dark mb-0">100%</h4>
-                    <p className="text-secondary small mb-0">Transparan</p>
+                    <h4 className="text-2xl font-bold text-gray-900 mb-1">100%</h4>
+                    <p className="text-gray-500 text-sm">Transparan</p>
                  </div>
               </div>
             </div>
             
-            <div className="col-lg-6 text-center position-relative">
-              <div className="position-relative d-inline-block">
-                  {/* Abstract blob background for image */}
-                  <div className="position-absolute top-50 start-50 translate-middle w-100 h-100 bg-success bg-opacity-10 rounded-circle blur-3xl" style={{ filter: 'blur(60px)', zIndex: -1 }}></div>
-                  <img 
-                    src="https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?auto=format&fit=crop&q=80&w=800" 
-                    className="img-fluid rounded-4 shadow-xl position-relative z-2" 
-                    alt="Kegiatan Sosial Penyaluran Zakat" 
-                    loading="lazy"
-                    style={{ transform: 'rotate(-2deg)', border: '8px solid white' }}
-                  />
+            <div className="lg:w-1/2 relative">
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.4 }}
+                className="relative"
+              >
+                  {/* Decorative blur */}
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-primary/20 rounded-full blur-[100px] -z-10"></div>
                   
-                  {/* Floating Card */}
-                  <div className="card position-absolute bottom-0 start-0 mb-n4 ms-n4 border-0 shadow-lg p-3 rounded-4 z-3 d-none d-md-block" style={{ width: '200px' }}>
-                     <div className="d-flex align-items-center gap-3">
-                        <div className="bg-success text-white rounded-circle p-2 d-flex align-items-center justify-content-center" style={{ width: '40px', height: '40px' }}>
-                           ✓
-                        </div>
-                        <div>
-                           <p className="mb-0 fw-bold small">Tersalurkan</p>
-                           <p className="mb-0 text-success fw-bold">Rp 1.2 M+</p>
-                        </div>
-                     </div>
+                  <div className="relative z-10 p-2 bg-white rounded-3xl shadow-2xl rotate-[-2deg]">
+                    <img 
+                      src="https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?auto=format&fit=crop&q=80&w=800" 
+                      className="w-full h-auto rounded-2xl" 
+                      alt="Kegiatan Sosial" 
+                      loading="lazy"
+                    />
                   </div>
-              </div>
+                  
+                  {/* Floating Info Card */}
+                  <motion.div 
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.8 }}
+                    className="absolute -bottom-6 -left-6 bg-white p-4 rounded-2xl shadow-xl z-20 hidden md:flex items-center gap-4 border border-gray-50"
+                  >
+                     <div className="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center font-bold">
+                        ✓
+                     </div>
+                     <div>
+                        <p className="text-xs font-bold text-gray-400 uppercase">Tersalurkan</p>
+                        <p className="text-lg font-bold text-primary">{formatRp(1200000000)}</p>
+                     </div>
+                  </motion.div>
+              </motion.div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="py-5 bg-white">
-        <div className="container py-5">
-           <div className="row g-4 text-center">
+      <section className="py-24 bg-white">
+        <div className="container">
+           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {[
-                  { icon: "🛡️", title: "Amanah", desc: "Dikelola secara profesional sesuai syariat dan regulasi." },
-                  { icon: "⚡", title: "Cepat", desc: "Layanan responsif dan penyaluran bantuan segera." },
-                  { icon: "📊", title: "Transparan", desc: "Laporan keuangan yang diaudit dan dapat diakses publik." }
+                  { icon: "🛡️", title: "Amanah", desc: "Dikelola secara profesional sesuai syariat dan regulasi pemerintah." },
+                  { icon: "⚡", title: "Cepat", desc: "Layanan responsif dan penyaluran bantuan yang tepat waktu." },
+                  { icon: "📊", title: "Transparan", desc: "Laporan keuangan transparan dan diaudit secara berkala." }
               ].map((f, i) => (
-                  <div key={i} className="col-md-4">
-                      <div className="p-4 rounded-4 h-100 hover-lift border border-light bg-light bg-opacity-50">
-                          <div className="display-4 mb-3">{f.icon}</div>
-                          <h4 className="fw-bold mb-2">{f.title}</h4>
-                          <p className="text-secondary mb-0">{f.desc}</p>
-                      </div>
-                  </div>
+                  <motion.div 
+                    whileHover={{ y: -5 }}
+                    key={i} 
+                    className="p-8 rounded-3xl border border-gray-100 bg-gray-50/50 text-center"
+                  >
+                      <div className="text-5xl mb-6">{f.icon}</div>
+                      <h4 className="text-xl font-bold mb-3 text-gray-900">{f.title}</h4>
+                      <p className="text-gray-600 leading-relaxed">{f.desc}</p>
+                  </motion.div>
               ))}
            </div>
         </div>
       </section>
 
       {/* Featured Programs */}
-      <section className="py-5" style={{ background: '#f8fafc' }}>
-        <div className="container py-5">
-          <div className="d-flex justify-content-between align-items-end mb-5">
+      <section className="py-24 bg-gray-50">
+        <div className="container">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
             <div>
-               <span className="text-success fw-bold text-uppercase small letter-spacing-2">Program Unggulan</span>
-               <h2 className="fw-bold display-6 mt-2">Mari Berkontribusi</h2>
+               <span className="text-primary font-bold uppercase tracking-widest text-xs">Program Unggulan</span>
+               <h2 className="text-3xl lg:text-4xl font-bold mt-3 text-gray-900">Mari Berkontribusi Melalui Program Kebaikan</h2>
             </div>
-            <Link to="/program" className="btn btn-outline-success rounded-pill d-none d-md-inline-flex">
-               Lihat Semua <i className="bi bi-arrow-right ms-2"></i>
+            <Link to="/program" className="btn-outline-success rounded-full px-6 py-2.5 hidden md:flex items-center gap-2">
+               Lihat Semua <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
             </Link>
           </div>
           
-          <div className="row g-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
              {featuredPrograms.map(item => (
-                <div key={item.id} className="col-lg-4 col-md-6">
-                    <ProgramCard {...item} />
-                </div>
+                <ProgramCard key={item.id} {...item} />
              ))}
           </div>
           
-          <div className="text-center mt-5 d-md-none">
-            <Link to="/program" className="btn btn-outline-success rounded-pill">
+          <div className="text-center mt-12 md:hidden">
+            <Link to="/program" className="btn-outline-success w-full py-4 rounded-xl">
                Lihat Semua Program
             </Link>
           </div>
         </div>
       </section>
 
-      {/* CTA Zakat Calculator */}
-      <section className="py-5 bg-dark position-relative overflow-hidden">
-         {/* Background pattern */}
-         <div className="position-absolute top-0 start-0 w-100 h-100 opacity-10" style={{ 
+      {/* CTA Section */}
+      <section className="py-24 relative overflow-hidden bg-gray-900">
+         <div className="absolute inset-0 opacity-10" style={{ 
              backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)', 
-             backgroundSize: '20px 20px' 
+             backgroundSize: '30px 30px' 
          }}></div>
          
-         <div className="container position-relative z-1 py-5">
-            <div className="row align-items-center justify-content-center text-center">
-               <div className="col-lg-8">
-                  <h2 className="display-5 fw-bold text-white mb-4">Sudahkah Anda Menghitung Zakat?</h2>
-                  <p className="lead text-white-50 mb-5">
-                     Gunakan kalkulator zakat kami untuk menghitung kewajiban zakat Maal, Profesi, atau Penghasilan Anda dengan mudah dan akurat.
-                  </p>
-                  <Link to="/kalkulator-zakat" className="btn btn-success btn-lg rounded-pill px-5 py-3 shadow-lg hover-scale">
-                     <span className="me-2">🧮</span> Hitung Zakat Sekarang
-                  </Link>
-               </div>
+         <div className="container relative z-10">
+            <div className="max-w-3xl mx-auto text-center">
+               <h2 className="text-3xl lg:text-5xl font-bold text-white mb-6">Sudahkah Anda Menghitung Zakat?</h2>
+               <p className="text-lg text-gray-400 mb-10 leading-relaxed">
+                  Gunakan kalkulator zakat kami untuk menghitung kewajiban zakat Maal, Profesi, atau Penghasilan Anda dengan mudah dan akurat.
+               </p>
+               <Link to="/kalkulator-zakat" className="bg-primary hover:bg-primary-hover text-white px-10 py-5 rounded-full text-lg font-bold shadow-2xl inline-flex items-center gap-3 transition-all hover:scale-105">
+                  <span>🧮</span> Hitung Zakat Sekarang
+               </Link>
             </div>
          </div>
       </section>
-    </>
+    </div>
   );
 };
 

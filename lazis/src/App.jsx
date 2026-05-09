@@ -7,10 +7,17 @@ import Footer from './components/Footer';
 
 // Import Halaman
 import Beranda from './pages/Beranda';
-import Profil from './pages/Profil';
-import Zakat from './pages/Zis';
+import Profil from './pages/profil/index';
+import Zakat from './pages/zakat/index';
 import Program from './pages/Program';
 import Layanan from './pages/Layanan';
+import Berita from './pages/Berita';
+import NotFound from './pages/NotFound';
+
+// Import Halaman Admin
+import Login from './pages/admin/Login';
+import ManagePrograms from './pages/admin/ManagePrograms';
+import ManageNews from './pages/admin/ManageNews';
 
 const pageVariants = {
   initial: { opacity: 0, y: 20 },
@@ -20,13 +27,14 @@ const pageVariants = {
 
 function App() {
   const location = useLocation();
+  const isAdminPage = location.pathname.startsWith('/admin') || location.pathname === '/login';
 
   return (
     <>
-      <Navbar />
+      {!isAdminPage && <Navbar />}
 
       {/* Area Konten Utama */}
-      <main style={{ minHeight: '80vh' }}>
+      <main style={{ minHeight: isAdminPage ? '100vh' : '80vh' }}>
         <AnimatePresence mode="wait">
           <motion.div
             key={location.pathname}
@@ -37,46 +45,41 @@ function App() {
             transition={{ duration: 0.3 }}
           >
             <Routes location={location}>
-              {/* Beranda */}
+              {/* Public Routes */}
               <Route path="/" element={<Beranda />} />
-
-              {/* Group Profil */}
               <Route path="/tentang-kami" element={<Profil subPage="tentang" />} />
               <Route path="/visi-misi" element={<Profil subPage="visimisi" />} />
               <Route path="/susunan-pengurus" element={<Profil subPage="pengurus" />} />
-
-              {/* Group Zakat */}
               <Route path="/zakat" element={<Zakat type="zakat" />} />
               <Route path="/kalkulator-zakat" element={<Zakat type="kalkulator" />} />
               <Route path="/edukasi" element={<Zakat type="edukasi" />} />
               <Route path="/infaq" element={<Zakat type="infaq" />} />
-
-              {/* Group Program */}
               <Route path="/program" element={<Program kategori="donasi" />} />
               <Route path="/program/pendidikan" element={<Program kategori="pendidikan" />} />
               <Route path="/program/kesehatan" element={<Program kategori="kesehatan" />} />
               <Route path="/program/ekonomi" element={<Program kategori="ekonomi" />} />
               <Route path="/program/kemanusiaan" element={<Program kategori="kemanusiaan" />} />
               <Route path="/program/lingkungan" element={<Program kategori="lingkungan" />} />
-
-              {/* Group Layanan */}
               <Route path="/kantor-layanan" element={<Layanan subPage="kantor" />} />
               <Route path="/konsultasi" element={<Layanan subPage="konsultasi" />} />
               <Route path="/info-rekening" element={<Layanan subPage="rekening" />} />
               <Route path="/annual-report" element={<Layanan subPage="laporan" />} />
+              <Route path="/penerima-manfaat" element={<div className="container py-20"><h2>Halaman Penerima Manfaat</h2></div>} />
+              <Route path="/berita" element={<Berita />} />
 
-              {/* Halaman Standalone */}
-              <Route path="/penerima-manfaat" element={<div className="container py-5 mt-5"><h2>Halaman Penerima Manfaat</h2></div>} />
-              <Route path="/berita" element={<div className="container py-5 mt-5"><h2>Halaman Berita Terkini</h2></div>} />
+              {/* Admin Routes */}
+              <Route path="/login" element={<Login />} />
+              <Route path="/admin" element={<ManagePrograms />} />
+              <Route path="/admin/news" element={<ManageNews />} />
 
-              {/* Fallback */}
-              <Route path="*" element={<Beranda />} />
+              {/* 404 Not Found */}
+               <Route path="*" element={<NotFound />} />
             </Routes>
           </motion.div>
         </AnimatePresence>
       </main>
 
-      <Footer />
+      {!isAdminPage && <Footer />}
     </>
   );
 }

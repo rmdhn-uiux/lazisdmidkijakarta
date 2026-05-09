@@ -1,54 +1,65 @@
 import { Link } from 'react-router-dom';
+import { formatRp } from '../utils/format';
+import { motion } from 'framer-motion';
 
 const ProgramCard = ({ id, title, category, cat, target, collected = 0, image }) => {
   const displayCategory = category || cat || 'Umum';
   const percentage = Math.min(100, Math.round((collected / target) * 100));
   
   return (
-    <div className="card h-100 border-0 shadow-sm hover-lift">
-      <div className="position-relative">
+    <motion.div 
+      whileHover={{ y: -5 }}
+      className="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-gray-100 flex flex-col h-full"
+    >
+      <div className="relative h-56 overflow-hidden">
         <img 
           src={image || `https://placehold.co/600x400/15803d/ffffff?text=${encodeURIComponent(displayCategory)}`} 
-          className="card-img-top" 
+          className="w-full h-full object-cover transition-transform duration-500 hover:scale-110" 
           alt={title} 
-          style={{ height: '220px', objectFit: 'cover' }}
         />
-        <span className="badge bg-white text-success position-absolute top-0 end-0 m-3 shadow-sm px-3 py-2 rounded-pill fw-bold">
-          {displayCategory.toUpperCase()}
-        </span>
-      </div>
-      
-      <div className="card-body d-flex flex-column p-4">
-        <h5 className="card-title fw-bold mb-3">{title}</h5>
-        
-        <div className="mt-auto">
-          <div className="d-flex justify-content-between small fw-bold mb-1">
-            <span className="text-success">Rp {collected.toLocaleString('id-ID')}</span>
-            <span className="text-secondary">Rp {target.toLocaleString('id-ID')}</span>
-          </div>
-          
-          <div className="progress mb-3" style={{ height: '8px', borderRadius: '10px', backgroundColor: '#e2e8f0' }}>
-            <div 
-              className="progress-bar bg-success" 
-              role="progressbar" 
-              style={{ width: `${percentage}%`, borderRadius: '10px' }} 
-              aria-valuenow={percentage} 
-              aria-valuemin="0" 
-              aria-valuemax="100"
-            ></div>
-          </div>
-          
-          <div className="d-flex justify-content-between align-items-center mb-3">
-             <small className="text-muted">{percentage}% Terkumpul</small>
-             <small className="text-muted">∞ Hari Lagi</small>
-          </div>
-
-          <Link to={`/program/${id}`} className="btn btn-outline-success w-100 fw-bold rounded-pill">
-            Donasi Sekarang
-          </Link>
+        <div className="absolute top-4 right-4">
+          <span className="bg-white/90 backdrop-blur-sm text-primary text-[10px] font-extrabold px-3 py-1.5 rounded-full shadow-sm uppercase tracking-wider">
+            {displayCategory}
+          </span>
         </div>
       </div>
-    </div>
+      
+      <div className="p-6 flex flex-col flex-grow">
+        <h3 className="text-lg font-bold text-gray-900 mb-4 line-clamp-2 leading-snug h-12">
+          {title}
+        </h3>
+        
+        <div className="mt-auto">
+          <div className="flex justify-between text-xs font-bold mb-2">
+            <span className="text-primary">{formatRp(collected)}</span>
+            <span className="text-gray-400">Target: {formatRp(target)}</span>
+          </div>
+          
+          <div className="w-full h-2 bg-gray-100 rounded-full mb-4 overflow-hidden">
+            <motion.div 
+              initial={{ width: 0 }}
+              animate={{ width: `${percentage}%` }}
+              transition={{ duration: 1, ease: "easeOut" }}
+              className="h-full bg-primary rounded-full"
+            ></motion.div>
+          </div>
+          
+          <div className="flex justify-between items-center mb-6 text-[11px] font-medium text-gray-500">
+             <span className="flex items-center gap-1">
+                <span className="text-primary font-bold">{percentage}%</span> Terkumpul
+             </span>
+             <span>∞ Hari Lagi</span>
+          </div>
+
+<Link 
+             to="/program" 
+             className="w-full py-3 rounded-xl border-2 border-primary text-primary font-bold text-sm text-center hover:bg-primary hover:text-white transition-all block"
+           >
+             Donasi Sekarah
+           </Link>
+        </div>
+      </div>
+    </motion.div>
   );
 };
 

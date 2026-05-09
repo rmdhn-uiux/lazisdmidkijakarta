@@ -2,62 +2,62 @@ import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
-    <footer className="bg-dark text-white pt-5 pb-3 mt-5">
+    <footer className="bg-gray-900 text-white pt-20 pb-10 mt-20">
       <div className="container">
-        <div className="row g-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Tentang Kami */}
-          <div className="col-lg-4 col-md-6">
-            <h5 className="fw-bold mb-3 text-success">Lazis DMI DKI Jakarta</h5>
-            <p className="text-secondary small">
+          <div className="space-y-6">
+            <h5 className="text-xl font-bold text-primary">Lazis DMI DKI Jakarta</h5>
+            <p className="text-gray-400 text-sm leading-relaxed">
               Lembaga Amil Zakat yang dikelola oleh Dewan Masjid Indonesia Provinsi DKI Jakarta. 
               Menebar kebaikan dan memberdayakan umat melalui dana ZISWAF yang dikelola secara amanah dan profesional.
             </p>
-            <div className="d-flex gap-3 mt-3">
-              <a href="#" className="text-white hover-success"><i className="bi bi-facebook"></i> FB</a>
-              <a href="#" className="text-white hover-success"><i className="bi bi-instagram"></i> IG</a>
-              <a href="#" className="text-white hover-success"><i className="bi bi-youtube"></i> YT</a>
+            <div className="flex gap-4">
+              <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary transition-colors">FB</a>
+              <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary transition-colors">IG</a>
+              <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary transition-colors">YT</a>
             </div>
           </div>
 
           {/* Program */}
-          <div className="col-lg-2 col-md-6">
-            <h6 className="fw-bold mb-3">Program Kami</h6>
-            <ul className="list-unstyled small d-flex flex-column gap-2">
-              <li><Link to="/program/pendidikan" className="text-decoration-none text-secondary hover-white">Pendidikan</Link></li>
-              <li><Link to="/program/kesehatan" className="text-decoration-none text-secondary hover-white">Kesehatan</Link></li>
-              <li><Link to="/program/ekonomi" className="text-decoration-none text-secondary hover-white">Ekonomi Umat</Link></li>
-              <li><Link to="/program/kemanusiaan" className="text-decoration-none text-secondary hover-white">Kemanusiaan</Link></li>
+          <div>
+            <h6 className="text-lg font-bold mb-6">Program Kami</h6>
+            <ul className="space-y-4 text-sm">
+              <li><Link to="/program/pendidikan" className="text-gray-400 hover:text-white transition-colors">🎓 Pendidikan</Link></li>
+              <li><Link to="/program/kesehatan" className="text-gray-400 hover:text-white transition-colors">🏥 Kesehatan</Link></li>
+              <li><Link to="/program/ekonomi" className="text-gray-400 hover:text-white transition-colors">💼 Ekonomi Umat</Link></li>
+              <li><Link to="/program/kemanusiaan" className="text-gray-400 hover:text-white transition-colors">🤝 Kemanusiaan</Link></li>
             </ul>
           </div>
 
           {/* Tautan Cepat */}
-          <div className="col-lg-2 col-md-6">
-            <h6 className="fw-bold mb-3">Tautan</h6>
-            <ul className="list-unstyled small d-flex flex-column gap-2">
-              <li><Link to="/tentang-kami" className="text-decoration-none text-secondary hover-white">Tentang Kami</Link></li>
-              <li><Link to="/kalkulator-zakat" className="text-decoration-none text-secondary hover-white">Kalkulator Zakat</Link></li>
-              <li><Link to="/info-rekening" className="text-decoration-none text-secondary hover-white">Info Rekening</Link></li>
-              <li><Link to="/berita" className="text-decoration-none text-secondary hover-white">Berita Terkini</Link></li>
+          <div>
+            <h6 className="text-lg font-bold mb-6">Tautan Cepat</h6>
+            <ul className="space-y-4 text-sm">
+              <li><Link to="/tentang-kami" className="text-gray-400 hover:text-white transition-colors">Tentang Kami</Link></li>
+              <li><Link to="/kalkulator-zakat" className="text-gray-400 hover:text-white transition-colors">Kalkulator Zakat</Link></li>
+              <li><Link to="/info-rekening" className="text-gray-400 hover:text-white transition-colors">Info Rekening</Link></li>
+              <li><Link to="/berita" className="text-gray-400 hover:text-white transition-colors">Berita Terkini</Link></li>
             </ul>
           </div>
 
           {/* Kontak */}
-          <div className="col-lg-4 col-md-6">
-            <h6 className="fw-bold mb-3">Hubungi Kami</h6>
-            <ul className="list-unstyled small text-secondary d-flex flex-column gap-2">
-              <li className="d-flex gap-2">
+          <div>
+            <h6 className="text-lg font-bold mb-6">Hubungi Kami</h6>
+            <ul className="space-y-4 text-sm text-gray-400">
+              <li className="flex gap-3">
                 <span>📍</span>
                 <span>Jl. Masjid Raya No. 1, Jakarta</span>
               </li>
-              <li className="d-flex gap-2">
+              <li className="flex gap-3">
                 <span>📞</span>
                 <span>(021) 1234-5678</span>
               </li>
-              <li className="d-flex gap-2">
+              <li className="flex gap-3 text-primary font-bold">
                 <span>📱</span>
                 <span>+62 821-1746-0200 (WA)</span>
               </li>
-              <li className="d-flex gap-2">
+              <li className="flex gap-3">
                 <span>✉️</span>
                 <span>info@lazisdmidki.id</span>
               </li>
@@ -65,10 +65,12 @@ const Footer = () => {
           </div>
         </div>
 
-        <hr className="border-secondary my-4" />
-
-        <div className="text-center small text-secondary">
-          <p className="mb-0">&copy; {new Date().getFullYear()} Lazis DMI DKI Jakarta. All rights reserved.</p>
+        <div className="border-t border-white/5 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500">
+          <p>&copy; {new Date().getFullYear()} Lazis DMI DKI Jakarta. All rights reserved.</p>
+          <div className="flex gap-6">
+            <a href="#" className="hover:text-white">Syarat & Ketentuan</a>
+            <a href="#" className="hover:text-white">Kebijakan Privasi</a>
+          </div>
         </div>
       </div>
     </footer>

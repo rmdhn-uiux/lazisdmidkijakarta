@@ -1,39 +1,67 @@
+import { useState, useEffect } from 'react';
 import ProgramCard from '../components/ProgramCard';
+import { motion } from 'framer-motion';
+import { getPrograms } from '../api';
 
 const Program = ({ kategori }) => {
-  // Data Program (Dummy Data diperluas)
-  const programs = [
-    { id: 1, title: "Beasiswa Dhuafa Berprestasi", cat: "pendidikan", target: 100000000, collected: 45000000 },
-    { id: 2, title: "Layanan Ambulans Gratis 24 Jam", cat: "kesehatan", target: 250000000, collected: 120000000 },
-    { id: 3, title: "Bantuan Modal Usaha Mikro", cat: "ekonomi", target: 50000000, collected: 15000000 },
-    { id: 4, title: "Tanggap Bencana Banjir Jakarta", cat: "kemanusiaan", target: 50000000, collected: 32000000 },
-    { id: 5, title: "Program 1000 Pohon Masjid", cat: "lingkungan", target: 10000000, collected: 2500000 },
-    { id: 6, title: "Renovasi Sanitasi Masjid", cat: "kesehatan", target: 75000000, collected: 60000000 },
-  ];
+  const [programs, setPrograms] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPrograms = async () => {
+      try {
+        const response = await getPrograms();
+        setPrograms(response.data);
+      } catch (error) {
+        console.error("Error fetching programs:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPrograms();
+  }, []);
 
   // Filter: Jika kategori 'donasi' (semua), tampilkan semua. Jika tidak, filter berdasarkan kategori.
   const filtered = kategori === 'donasi' || !kategori
     ? programs 
-    : programs.filter(p => p.cat === kategori);
+    : programs.filter(p => p.category === kategori);
 
   const getTitle = () => {
     if (!kategori || kategori === 'donasi') return 'Semua Program Kebaikan';
     return `Program ${kategori.charAt(0).toUpperCase() + kategori.slice(1)}`;
   }
 
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
   return (
-    <section className="py-5 mt-5">
+    <section className="py-20 bg-bg min-h-screen">
       <div className="container">
-        <div className="text-center mb-5">
-          <h2 className="fw-bold display-6 text-success mb-3">{getTitle()}</h2>
-          <p className="text-secondary mw-600 mx-auto">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-16"
+        >
+          <span className="text-primary font-bold uppercase tracking-widest text-xs mb-3 block">Daftar Program</span>
+          <h2 className="text-3xl lg:text-5xl font-bold text-gray-900 mb-6">{getTitle()}</h2>
+          <p className="text-text-muted text-lg max-w-2xl mx-auto leading-relaxed">
             Salurkan donasi terbaik Anda untuk program-program pemberdayaan umat bersama Lazis DMI DKI Jakarta.
           </p>
-        </div>
+        </motion.div>
         
-        <div className="row g-4">
-          {filtered.length > 0 ? filtered.map(item => (
-            <div key={item.id} className="col-lg-4 col-md-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {filtered.length > 0 ? filtered.map((item, index) => (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
+              key={item.id}
+            >
               <ProgramCard 
                 id={item.id}
                 title={item.title}
@@ -41,12 +69,12 @@ const Program = ({ kategori }) => {
                 target={item.target}
                 collected={item.collected}
               />
-            </div>
+            </motion.div>
           )) : (
-            <div className="col-12 text-center py-5">
-              <div className="alert alert-info d-inline-block px-5">
-                Belum ada program aktif di kategori ini.
-              </div>
+            <div className="col-span-full text-center py-20 bg-white rounded-3xl border border-dashed border-gray-300">
+               <div className="text-6xl mb-4">🔍</div>
+               <h3 className="text-xl font-bold text-gray-900 mb-2">Program Tidak Ditemukan</h3>
+               <p className="text-text-muted">Belum ada program aktif di kategori ini.</p>
             </div>
           )}
         </div>

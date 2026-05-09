@@ -1,6 +1,6 @@
 {
-  "buildCommand": "cd lazis && npm install && npm run build",
-  "outputDirectory": "lazis/dist",
+  "buildCommand": "npm install && npm run build",
+  "outputDirectory": "dist",
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]

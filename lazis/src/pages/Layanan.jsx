@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import LaporanChart from '../components/LaporanChart';
 
 const Layanan = ({ subPage }) => {
   const activeTab = subPage || 'kantor';
@@ -79,15 +80,14 @@ const Layanan = ({ subPage }) => {
                 Bingung menghitung zakat? Ingin berkonsultasi seputar hukum waris atau wakaf? 
                 Tim asatidz kami siap membantu Anda.
              </p>
-             <a 
-               href="https://wa.me/6282117460200" 
-               target="_blank" 
-               rel="noreferrer" 
+             <a
+               href="https://wa.me/6283899342854"
+               target="_blank"
+               rel="noreferrer"
                className="btn-primary rounded-full px-10 py-4 text-lg shadow-xl hover:scale-105 active:scale-95"
              >
-                Chat via WhatsApp
-             </a>
-          </motion.div>
+               Chat via WhatsApp
+             </a>          </motion.div>
         );
       case 'rekening':
         return (
@@ -139,37 +139,23 @@ const Layanan = ({ subPage }) => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
           >
-             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-                <h2 className="text-2xl font-bold text-gray-900">Laporan Tahunan</h2>
+             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-12">
+                <div>
+                   <h2 className="text-3xl font-bold text-gray-900">Laporan Tahunan</h2>
+                   <p className="text-text-muted mt-2">Transparansi penyaluran dana zakat, infaq, dan sedekah</p>
+                </div>
                 <div className="relative inline-block text-left">
-                   <select className="appearance-none bg-white border border-gray-200 rounded-full px-6 py-2.5 pr-10 font-semibold text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary/20">
+                   <select className="appearance-none bg-white border border-gray-200 rounded-full px-6 py-3 pr-12 font-bold text-gray-700 focus:outline-none focus:ring-4 focus:ring-primary/10 transition-all cursor-pointer">
+                      <option>Tahun 2025</option>
                       <option>Tahun 2024</option>
-                      <option>Tahun 2023</option>
-                      <option>Tahun 2022</option>
                    </select>
-                   <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-700">
-                      <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                   <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
+                      <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
                    </div>
                 </div>
              </div>
              
-             <div className="bg-white border border-gray-100 shadow-sm rounded-3xl p-10 text-center relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-full -mr-10 -mt-10 group-hover:scale-110 transition-transform"></div>
-                
-                <div className="mb-6 relative z-10">
-                   <div className="w-20 h-20 bg-red-50 text-red-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                      <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
-                   </div>
-                </div>
-                <h4 className="text-xl font-bold text-gray-900 mb-2">Annual Report 2024</h4>
-                <p className="text-text-muted mb-8 max-w-md mx-auto">Laporan kinerja dan keuangan Lazis DMI DKI Jakarta Tahun 2024</p>
-                <div className="relative z-10">
-                   <button className="btn-primary rounded-full px-8 flex items-center gap-2 mx-auto">
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
-                      Download PDF
-                   </button>
-                </div>
-             </div>
+             <LaporanChart />
           </motion.div>
         );
       default:

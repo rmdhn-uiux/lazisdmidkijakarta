@@ -16,8 +16,11 @@ import NotFound from './pages/NotFound';
 
 // Import Halaman Admin
 import Login from './pages/admin/Login';
+import Dashboard from './pages/admin/Dashboard';
 import ManagePrograms from './pages/admin/ManagePrograms';
 import ManageNews from './pages/admin/ManageNews';
+import ManageTransactions from './pages/admin/ManageTransactions';
+import ProtectedRoute from './components/admin/ProtectedRoute';
 
 const pageVariants = {
   initial: { opacity: 0, y: 20 },
@@ -69,8 +72,11 @@ function App() {
 
               {/* Admin Routes */}
               <Route path="/login" element={<Login />} />
-              <Route path="/admin" element={<ManagePrograms />} />
-              <Route path="/admin/news" element={<ManageNews />} />
+              <Route path="/admin" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+              <Route path="/admin/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+              <Route path="/admin/programs" element={<ProtectedRoute><ManagePrograms /></ProtectedRoute>} />
+              <Route path="/admin/news" element={<ProtectedRoute><ManageNews /></ProtectedRoute>} />
+              <Route path="/admin/transactions" element={<ProtectedRoute><ManageTransactions /></ProtectedRoute>} />
 
               {/* 404 Not Found */}
                <Route path="*" element={<NotFound />} />

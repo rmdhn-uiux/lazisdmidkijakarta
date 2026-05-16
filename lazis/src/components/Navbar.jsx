@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import logoLazis from '../assets/logolazisdmi.jpg';
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -65,10 +66,16 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 shadow-md py-3' : 'bg-white/90 py-5'}`}>
+    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${scrolled ? 'bg-white/95 backdrop-blur-md shadow-xl py-2' : 'bg-transparent py-5'}`}>
       <div className="container flex items-center justify-between">
-        <Link className="flex items-center gap-2" to="/">
-          <span className="text-2xl font-bold text-primary tracking-tight">Lazis DMI DKI</span>
+        <Link className="flex items-center gap-3 group" to="/">
+          <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-xl overflow-hidden shadow-lg group-hover:scale-110 transition-transform duration-300">
+            <img src={logoLazis} alt="Lazis DMI DKI" className="w-full h-full object-cover" />
+          </div>
+          <div className="flex flex-col">
+            <span className={`text-lg lg:text-xl font-black tracking-tighter leading-none ${scrolled || location.pathname !== '/' ? 'text-primary' : 'text-primary'}`}>LAZIS DMI</span>
+            <span className={`text-[8px] lg:text-[10px] font-bold uppercase tracking-[0.2em] ${scrolled || location.pathname !== '/' ? 'text-gray-400' : 'text-gray-500'}`}>DKI JAKARTA</span>
+          </div>
         </Link>
         
         {/* Desktop Menu */}

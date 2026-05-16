@@ -23,6 +23,12 @@ export const deleteProgram = (id) => api.delete(`/programs/${id}`);
 
 export const getNews = () => api.get('/news');
 export const createNews = (data) => api.post('/news', data);
+export const updateNews = (id, data) => api.put(`/news/${id}`, data);
 export const deleteNews = (id) => api.delete(`/news/${id}`);
+
+export const getTransactions = () => api.get('/transactions');
+export const createTransaction = (data) => api.post('/transactions', data);
+export const updateTransaction = (id, data) => api.put(`/transactions/${id}`, data);
+export const deleteTransaction = (id) => api.delete(`/transactions/${id}`);
 
 export default api;

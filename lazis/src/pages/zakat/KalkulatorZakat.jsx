@@ -103,7 +103,7 @@ const KalkulatorZakat = () => {
 
     const handleKonfirmasiWA = () => {
         if (!namaDonatur.trim()) return alert('Masukkan nama Anda.');
-        const nomorWA = '6282117460200';
+        const nomorWA = '6283899342854';
         const msg = encodeURIComponent(
             `Assalamualaikum, saya konfirmasi pembayaran zakat:\n` +
             `Nama: ${namaDonatur}\nJenis: ${selectedJenis.label}\nTotal: ${formatRp(hasil.zakat)}\nMetode: ${metode.toUpperCase()}`

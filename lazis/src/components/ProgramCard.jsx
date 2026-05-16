@@ -2,8 +2,8 @@ import { Link } from 'react-router-dom';
 import { formatRp } from '../utils/format';
 import { motion } from 'framer-motion';
 
-const ProgramCard = ({ id, title, category, cat, target, collected = 0, image }) => {
-  const displayCategory = category || cat || 'Umum';
+const ProgramCard = ({ title, category, target, collected = 0, image }) => {
+  const displayCategory = category || 'Umum';
   const percentage = Math.min(100, Math.round((collected / target) * 100));
   
   return (
@@ -55,7 +55,7 @@ const ProgramCard = ({ id, title, category, cat, target, collected = 0, image })
              to="/program" 
              className="w-full py-3 rounded-xl border-2 border-primary text-primary font-bold text-sm text-center hover:bg-primary hover:text-white transition-all block"
            >
-             Donasi Sekarah
+             Donasi Sekarang
            </Link>
         </div>
       </div>

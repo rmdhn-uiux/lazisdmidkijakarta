@@ -28,6 +28,14 @@ db.exec(`
     date TEXT,
     image_url TEXT
   );
+
+  CREATE TABLE IF NOT EXISTS transactions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    type TEXT, -- 'zakat' or 'infaq'
+    amount INTEGER,
+    date TEXT,
+    description TEXT
+  );
 `);
 
 // Seed Admin User if not exists
@@ -51,6 +59,27 @@ if (programsCount === 0) {
     const insert = db.prepare('INSERT INTO programs (title, category, target, collected) VALUES (@title, @category, @target, @collected)');
     for (const p of seedPrograms) {
         insert.run(p);
+    }
+}
+
+// Seed Transactions if empty
+const transactionsCount = db.prepare('SELECT COUNT(*) as count FROM transactions').get().count;
+if (transactionsCount === 0) {
+    const seedTransactions = [
+        { type: 'zakat', amount: 5000000, date: '2025-01-10', description: 'Zakat Mal Bapak H.' },
+        { type: 'infaq', amount: 2000000, date: '2025-01-15', description: 'Infaq Masjid' },
+        { type: 'zakat', amount: 3500000, date: '2025-02-05', description: 'Zakat Profesi Ibu S.' },
+        { type: 'infaq', amount: 1500000, date: '2025-02-20', description: 'Sedekah Jumat' },
+        { type: 'zakat', amount: 7000000, date: '2025-03-12', description: 'Zakat Mal Perusahaan X' },
+        { type: 'infaq', amount: 4000000, date: '2025-03-25', description: 'Infaq Pendidikan' },
+        { type: 'zakat', amount: 4500000, date: '2025-04-05', description: 'Zakat Profesi' },
+        { type: 'infaq', amount: 3000000, date: '2025-04-18', description: 'Infaq Kesehatan' },
+        { type: 'zakat', amount: 6000000, date: '2025-05-02', description: 'Zakat Mal' },
+        { type: 'infaq', amount: 2500000, date: '2025-05-15', description: 'Infaq Yatim' },
+    ];
+    const insert = db.prepare('INSERT INTO transactions (type, amount, date, description) VALUES (@type, @amount, @date, @description)');
+    for (const t of seedTransactions) {
+        insert.run(t);
     }
 }
 

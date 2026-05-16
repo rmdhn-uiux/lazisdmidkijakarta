@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { formatRp } from '../../utils/format';
+import qrisImage from '../../assets/Qrislazis.jpeg';
 
 const NOMINAL_CEPAT = [10000, 25000, 50000, 100000, 250000, 500000];
 
@@ -32,7 +33,7 @@ const InfaqShodaqoh = () => {
 
     const handleKonfirmasiWA = () => {
         if (!namaDonatur.trim()) return alert('Masukkan nama Anda.');
-        const nomorWA = '6282117460200';
+        const nomorWA = '6283899342854';
         const msg = encodeURIComponent(
             `Assalamualaikum, saya konfirmasi Infaq/Shodaqoh:\n` +
             `Nama: ${namaDonatur}\nPeruntukan: ${katObj?.label}\nNominal: ${formatRp(nominalNum)}\nMetode: ${metode.toUpperCase()}`
@@ -156,9 +157,12 @@ const InfaqShodaqoh = () => {
                                         </div>
 
                                         {metode === 'qris' ? (
-                                            <div className="flex flex-col items-center">
-                                                <div className="w-40 h-40 bg-gray-50 rounded-2xl border border-dashed border-gray-200 flex items-center justify-center font-black text-primary italic mb-4">QRIS</div>
-                                                <p className="text-[10px] text-gray-500 text-center">Scan melalui m-banking atau e-wallet</p>
+                                            <div className="flex flex-col items-center bg-gray-50 p-6 rounded-2xl">
+                                                <div className="w-48 h-48 bg-white p-3 rounded-xl shadow-sm mb-4 flex items-center justify-center border border-gray-100 overflow-hidden">
+                                                    <img src={qrisImage} alt="QRIS Lazis DMI" className="w-full h-full object-contain" />
+                                                </div>
+                                                <p className="text-[10px] text-gray-500 text-center uppercase font-bold tracking-wider">Lazis DMI DKI Jakarta</p>
+                                                <p className="text-[10px] text-gray-400 text-center">Scan melalui m-banking atau e-wallet</p>
                                             </div>
                                         ) : (
                                             <div className="space-y-3">

@@ -81,6 +81,38 @@ app.delete('/api/news/:id', authenticateToken, (req, res) => {
     res.json({ message: 'Deleted' });
 });
 
+app.put('/api/news/:id', authenticateToken, (req, res) => {
+    const { title, content, date, image_url } = req.body;
+    db.prepare('UPDATE news SET title = ?, content = ?, date = ?, image_url = ? WHERE id = ?')
+        .run(title, content, date, image_url, req.params.id);
+    res.json({ message: 'Updated' });
+});
+
+// Transaction Routes
+app.get('/api/transactions', (req, res) => {
+    const transactions = db.prepare('SELECT * FROM transactions ORDER BY date DESC').all();
+    res.json(transactions);
+});
+
+app.post('/api/transactions', authenticateToken, (req, res) => {
+    const { type, amount, date, description } = req.body;
+    const info = db.prepare('INSERT INTO transactions (type, amount, date, description) VALUES (?, ?, ?, ?)')
+        .run(type, amount, date, description);
+    res.json({ id: info.lastInsertRowid, type, amount, date, description });
+});
+
+app.put('/api/transactions/:id', authenticateToken, (req, res) => {
+    const { type, amount, date, description } = req.body;
+    db.prepare('UPDATE transactions SET type = ?, amount = ?, date = ?, description = ? WHERE id = ?')
+        .run(type, amount, date, description, req.params.id);
+    res.json({ message: 'Updated' });
+});
+
+app.delete('/api/transactions/:id', authenticateToken, (req, res) => {
+    db.prepare('DELETE FROM transactions WHERE id = ?').run(req.params.id);
+    res.json({ message: 'Deleted' });
+});
+
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });

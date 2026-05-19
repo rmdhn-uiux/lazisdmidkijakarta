@@ -89,7 +89,7 @@ app.put('/api/news/:id', authenticateToken, (req, res) => {
 });
 
 // Transaction Routes
-app.get('/api/transactions', (req, res) => {
+app.get('/api/transactions', authenticateToken, (req, res) => {
     const transactions = db.prepare('SELECT * FROM transactions ORDER BY date DESC').all();
     res.json(transactions);
 });

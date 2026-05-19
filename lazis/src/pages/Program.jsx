@@ -65,7 +65,7 @@ const Program = ({ kategori }) => {
               <ProgramCard 
                 id={item.id}
                 title={item.title}
-                category={item.cat}
+                category={item.category}
                 target={item.target}
                 collected={item.collected}
               />

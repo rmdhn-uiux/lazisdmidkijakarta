@@ -4,7 +4,7 @@ import { formatRp } from '../../utils/format';
 import AdminLayout from '../../components/admin/AdminLayout';
 import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import autoTable from 'jspdf-autotable';
 
 const ManageTransactions = () => {
     const [transactions, setTransactions] = useState([]);
@@ -79,12 +79,12 @@ const ManageTransactions = () => {
         const tableColumn = ["Tanggal", "Tipe", "Keterangan", "Nominal"];
         const tableRows = transactions.map(t => [
             t.date,
-            t.type.toUpperCase(),
+            (t.type || '').toUpperCase(),
             t.description,
             formatRp(t.amount)
         ]);
 
-        doc.autoTable({
+        autoTable(doc, {
             head: [tableColumn],
             body: tableRows,
             startY: 65,

@@ -26,15 +26,21 @@ const Dashboard = () => {
                 const totalZakat = transactions.filter(t => t.type === 'zakat').reduce((sum, t) => sum + t.amount, 0);
                 const totalInfaq = transactions.filter(t => t.type === 'infaq').reduce((sum, t) => sum + t.amount, 0);
 
-                // Simple monthly grouping for chart (last 6 months)
-                const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
-                const monthlyData = months.map((month, index) => {
+                // Group by all 12 months for current year (e.g., 2025)
+                const currentYearStr = new Date().getFullYear().toString();
+                const monthsShort = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+                
+                const monthlyData = monthsShort.map((month, index) => {
+                    const monthNum = (index + 1).toString().padStart(2, '0');
+                    const matchStr = `${currentYearStr}-${monthNum}-`;
+                    
                     const zakat = transactions
-                        .filter(t => t.type === 'zakat' && t.date.includes(`-0${index + 1}-`))
+                        .filter(t => t.type === 'zakat' && t.date.startsWith(matchStr))
                         .reduce((sum, t) => sum + t.amount, 0);
                     const infaq = transactions
-                        .filter(t => t.type === 'infaq' && t.date.includes(`-0${index + 1}-`))
+                        .filter(t => t.type === 'infaq' && t.date.startsWith(matchStr))
                         .reduce((sum, t) => sum + t.amount, 0);
+                        
                     return { month, zakat, infaq };
                 });
 
